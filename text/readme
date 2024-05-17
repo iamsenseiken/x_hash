@@ -1,0 +1,76 @@
+
+		    :*:*:*:*: IMPORTANT :*:*:*:*:
+
+	      READ THE FILE "distrib" BEFORE TO BEGIN TO
+		      USE OR COMPILE THIS CODE!
+
+
+	Hi ! X_List stands for "Xanadu List", it is a project that I have been
+playing with on and off for over a year. While there is not much code,
+it has been a long road to understanding this stuff enough that I was
+happy with the results.
+
+	I have always, as programmer, had a great fear of pointers. Well,
+maybe fear is to strong a word by I was certainly not fond of the little
+devils.  And NOTHING will bring you face to face with pointers faster than
+a good doubly linked list.
+
+	I sat there. Oh, I could use some canned list routines, but
+I wanted to KNOW what was happening in there. I wanted to be able to
+look at the source and say "AHA!". Well, I couldn't. The routines I could
+get the source to were way over my head, and not commented well.
+
+	So what I have done is look at what MY needs for list processing
+were, under both C and C++, and write the routines to do them. Along the way,
+I have tried to comment the code pretty well, and in the file "lists" you will
+find a mini-tutorial about what a list is and why we use them. The code in
+here is probably not as commented as you would like (or me!) but it is better
+than most, and combined with "lists" you should be fine.
+
+	This code is shareware, and so you should read the "distrib" file
+before you use this code. It is pretty lenient I feel, and hopefully you
+won't find it restrictive. In addition, hopefully I can make some money for
+a new hard drive ;-). Also, please upload this archive unaltered to any
+BBS or network to would like. Shareware lives by being spread!
+
+	This code was developed with Turbo C++ 1.0 under the VP/ix emulator
+of Interactive Systems Unix SysV3.2.
+
+	Every attempt has been made to make this code run under the
+following environments:
+
+	1: Unix. Any ANSI C or C++ 2.0 variant. SYSV, BSD and SUNOS.
+		(can anyone confirm g++?)
+
+	2: Ms-Dos. Turbo C++ and Turbo C.
+		(can anyone confirm MSC?)
+
+	3: Amiga.  Lattice C++ 1.0 and SAS/C 5.10
+		Note: I used SAS/C 5.10 as the C back end to the
+		      Lattice C++ compiler.
+		
+
+	I personally run it under all three, in both C and C++ programs so
+you should be ok.
+
+	Have fun! Read "distrib" and "install" next, "lists" for a 
+overview of linked lists, and "docs" for the documentation for the routines 
+here and happy listing!
+
+
+NOTE FOR UNIX USERS:
+
+	Forgive the fact that these text files have dos format CR-LF line
+terminators in them, there was no reason to have two versions and stripping
+them is easy enough.
+
+	- Kenneth Jamieson
+ 
+
+
+-----------------------------------------------------
+* UNIX is a trademark of AT&T
+* Amiga is a trademark of Commodore Business Machines
+* MS-DOS is a trademark of Microsoft Inc 
+
+

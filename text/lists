@@ -1,0 +1,310 @@
+				   
+			      *********
+			      * LISTS *
+			      *********
+
+
+	     Let's get this legal stuff out of the way !
+				   
+
+This text in this file is copyright (c) 1991 by Kenneth Jamieson.
+
+The author may be reached at the US MAIL address listed below, or
+by sending unix mail to ...
+
+           tron1@tronsbox.xei.com            or
+	   ...!uunet!tronsbox.xei.com!tron1  or
+	   yelling "Hey Ken!" if you happen to be close enough.
+
+
+	Ok, now, about lists.... This will be a simple text to
+introduce some of the basic list theory so that you can use the
+routines in this library.
+
+	I am using a "doubly linked list", this is a list where
+every piece of data knows where to find every other one... consider the 
+chart below. (I will number the "nodes" for clarity):
+
+	1-2-3-4-5
+
+	That is a 5 node list, where the node on the left is the parent
+or previous node, and the one on the right is the child or next node.
+
+	Now, lets store some data here, and introduce a concept or two.
+I am going to stand the list on it's side this time.
+
+	*1	(red)
+	 |
+	 2	(green)
+	 |
+	 3	(blue)
+	 |
+	 4	(yellow)
+	 |
+	 5	(orange)
+
+	See the "*" ? I am going to use that to show the "current" node in
+the list. Now, we have put colors "in" the nodes. We can move that
+"*" up or down the list, to the next and previous nodes.
+
+	We can replace the data that is in the current node, and we can
+add nodes to the end. Also, we can delete a node completely. 
+
+	Any list that you can move "previous: and "next" in is 
+doubly-linked. A singly-linked list only lest you move "next". 
+
+
+
+WHY USE LISTS AS A PROGRAMMER ?
+
+
+	With respect to "C" programming, why do we use lists at all ?
+
+	Let's say you are going to get a list of names from a user,
+and you don't know how many names you will get. You have 2 choices if you
+have to keep those names in memory...
+
+	1) Allocate more space than you will "EVER" need.
+
+	   Advantage - You don't have to worry about lists! It is just
+		       an array for you!
+
+	   Disadvantage - You often allocate MUCH more space than you
+			really use. Thus, you waste memory. Also, it is
+		 	generally good to avoid putting limits into a program
+			like "You can only enter 1000 names". A lack of
+			limits makes your code efficient (space wise) and
+			more flexible.
+
+	2) Use lists!
+
+	   Advantage - You never waste space (a bit on the list 
+		       overhead .. but not that much usually). You can
+		       adapt to almost anything.
+
+	   Disadvantage - Lists are a pain! De-bugging list code
+			  can drive you up a wall! 
+
+
+	Since I obviously feel you will want to use lists, let's talk
+	more about them....
+
+
+
+
+HOW TO IMPLEMENT A DOUBLY-LINKED LIST FOR C and C++:
+
+	I am not going to go into great detail of all the low level code here,
+because you can just go look at the source in x_list.c to see most of that.
+Here, we will take a look at the design considerations we should have for C
+and C++.
+
+	The natural thing to build a linked list of is pointers. This
+allows us a lot of flexibility.  Consider the example below....
+
+struct node{
+	struct node * prev;
+	struct node * next;
+	void * data;
+}
+
+	This structure will for the basis for our list. Because we want
+a doubly-linked list, we have two list pointers here, on that points to the
+address of the next node, and one to the previous node. The void * that
+is there is the data we are going to store in the list. It is nice to
+store a pointer as the data of the list so that we do not
+limit the things we can use the list for.
+
+	We can actually make a list out of these things. They are
+complete to form a simple list. Consider the program below:
+
+main(){
+	struct node node1;
+	struct node node2;
+
+	node1.prev = NULL;
+	node1.next = &node2;
+	node2.prev = &node1;
+	node2.next = NULL;
+}
+
+
+	That programs forms a list. Node1 knows where to find node2 and
+the opposite is true. There IS no previous node for node1 so that is
+NULL. In the same manner, there is no next node from node2 so that is also
+set to NULL. 
+
+	That's it ! Thats the magic of lists. If I have a pointer to
+node2, I can find node one at &node2->prev and so on.
+
+	Now, that is not EVERYTHING about it (it never is .. :-) ).
+The whole point of the list is that we want to make it bigger as we
+go along, not declare it at the start of the program like we did above.
+
+	So let's look at a minor variation:
+	(I will show only the code here, assume that the structure
+	"node" is defined for this program in a header file or something)
+	
+
+1   #include <malloc.h>		/* Get the memory stuff */
+2   main(){
+3	struct node * node1;
+4
+5	node1 = (struct node *)malloc( sizeof(struct node) );
+6	node1->prev = NULL;
+7
+8	node1->next = (struct node *)malloc( sizeof( struct node ) );
+9	node1->next->next = NULL;
+10	node1->next->prev = node1;
+11  }
+
+	WHAT HAPPENED!! you say ?
+
+	Trust me, it isn't that bad. Let's take it step by step.
+
+	First, obviously it would not compile with those line numbers.
+Ok.. second, you will see that we only declared one pointer. The
+pointer for the first node. That is the ONLY pointer we cannot infer
+from the list. YOU WILL ALWAYS HAVE AT LEAST ONE POINTER declared as
+a "base" for the list.
+
+	Step by step then....
+
+LINE 1 : We included the file for the malloc() call because we 
+	 use that call this time.
+
+LINE 2 : Start the program :-).
+
+LINE 3 : Declare a place to store the pointer for node1.
+
+LINE 5 : We allocate space for our first node, and store the 
+	 pointer for it in the variable node1.
+
+LINE 6 : There will never be a node BEFORE node1. So the
+	 address of the previous node in NULL. It is
+	 important that you PUT a NULL there yourself
+	 because you are not sure of it's value.
+
+	 The DEFINITION of the "head" or "top" of
+	 a list is "the node with no previous node". There
+	 will only ever be one node like this in a list.
+
+LINE 8 : We are going to save a step here. We are going to
+	 allocate space for another node, and store it's 
+	 pointer right into the space for it in node1. In this
+	 manner, we do NOT need to declare another variable.
+
+	 While this looks confusing, it really isn't. The only
+	 place that the address of node2 is relevant from
+	 at this time is node1.
+
+LINE 9 : We are at the end of the list (we only have 
+	 two nodes at this time) .. so there is no
+	 "next" node. Since we don't have a
+	 pointer for node2, we need to say "node1->next" every
+	 time we want to talk about node2, but there are ways to
+	 solve this problem in later examples.
+
+LINE 10: Now, to complete the list, we need to tell
+	 node2 about node1's address.
+
+	 So, we set the pervious node pointer in node2
+	 to be node1's pointer.
+
+
+	The weave is now complete and we have a linked
+list. You can see though, that we need some better way to 
+move from node to node. Because it would be a real pain
+about 5 nodes in ... could you imagine : 
+
+	node1->next->next->next->next
+	
+	It would get silly real fast!
+	
+	So, what I have done in this library is just 
+keep another structure for each list. It has a pointer to the
+first node in that list, a pointer to the last node, and a
+pointer to the current node.
+
+	The current node makes the list act a LOT like a
+loose leaf notebook. If you think of an empty list, you have
+a notebook with nothing in it at all. In this analogy, you 
+must add a piece of paper before you can write anything into the
+list. You do that as I showed you above, by adding a new node.
+
+	The current node is just a marker, an indication of
+where the notebook is open to right now. If we continue or
+example above, we have the pointer to the first node in the
+list stored as "node1" ... we will want to deal with node2 to
+for a while, so we can just say ...
+
+	current_node = node1->next;
+
+	Get it ?? This way, we don't have to say "node1->next"
+all the time. When the time comes to deal with node1 again, we can
+just say ...
+
+	current_node = node1;
+	
+	And there we are.
+
+	Now, in a list with many nodes, it is even more important
+because to get to node 5 it is tough to say ..
+
+	current-node = node1->next->next->next->next;
+
+	But it is EASY to say ....
+
+	current_node = node1;
+	for( x = 0; x < 4; x++ ){
+		current_node = current_node->next;
+	}
+
+	THAT code can take us to the 5 node in the list as well, 
+because we can just keep advancing. If we are at node 5, and want 
+to get to node 4, we can just say ..
+
+	current_node = current_node->prev;
+
+	So, you see that if you have the concept of a current node,
+and the pointer to the first node in the list, you are capable
+of going forward and backwards in the list.
+
+	Since the last node of a list is the only node with a 
+next pointer of NULL, we can find it very easy now.
+
+	if( current_node->next |= NULL ){
+		current_node = current_node->next;
+	}
+
+	That will leave current_node set to the last node in the
+list without any trouble at all, no matter where you happen to
+be.
+
+	The last thing I will show you about is how to delete a
+node. Suppose we want to remove the current_node from the list
+completely. What do we have to do ???? Well, the parent of the
+current node has to be pointed to the child of the current
+node so that the chain is not broken..
+
+	current_node->prev->next = current_node->next;
+
+	And the child of the current node has to be told of
+it's new parent (since it isn't us any more!)..
+
+	current_node->next->prev = current_node->prev;
+
+	Now, the chain is intact, and the ONLY place there is a
+pointer to the current node is in the current_node variable! We
+want to free that memory, so we should say ...
+
+	free(current_node);
+	current_node = node1;
+
+	That de-allocates that memory, and leaves us with a 
+valid current node pointer.
+
+	Now you should be able to look at my code and have
+some idea what it is doing. Have fun!
+
+ 

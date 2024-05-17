@@ -1,0 +1,38 @@
+			*********************
+			*WHAT IS X_HASH ????*
+			*********************
+
+	X_HASH is a collection of two libraries, X_List and X_Hash. 
+
+	You will need a ANSI C compiler or a C++ compiler.
+
+
+	1) X_List is a stand-alone library for C and C++ that will
+	   allow for the simple, efficient management of doubly linked
+	   lists of pointers in a logical form. This is one of the most
+	   often used programming constructs.
+
+	2) X_Hash allows for a list of pointers to be stored by a 
+	   key value. A function is provided to turn a text string into
+	   this key value. Thus, a pointer may be stored much like in a
+	   database.
+
+	   X_Hash needs X_List available to operate.
+
+	3) DOCUMENTATION is on the way, for now, the sample "test" programs
+	   should get you started, mail me any questions!
+
+	   (HINT) FULL DOCS available to registered users!
+
+========[ Xanadu Enterprises Inc. Amiga & Unix Software Development]=======
+= "I know how you feel, you don't know if you want to hit me or kiss me - =
+=  --- I get a lot of that."  Madonna as Breathless Mahoney (Dick Tracy)  =
+=========== Ken Jamieson: uunet!tronsbox.xei.com!tron1  ===================
+=     NONE of the opinions represented here are endorsed by anybody.      =
+=== The Romantic Encounters BBS 201-759-8450(PEP) / 201-759-8568(2400) ==== 
+
+
+
+
+
+
